@@ -1,0 +1,25 @@
+
+tarnaty :
+className={`p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-200 border flex flex-col
+                                ${vocabulary.difficulty === "easy"
+                                        ? "bg-green-200/5 border-green-500/20"
+                                        : vocabulary.difficulty === "medium"
+                                            ? "bg-orange-200/5 border-orange-500/20"
+                                            : "bg-red-200/5 border-red-500/20"
+                                    }`}
+***************************************************************************************
+echo "# b10-a9-authentication-himel-minhaj" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/programming-hero-web-course1/b10-a9-authentication-himel-minhaj.git
+git push -u origin main
+next*****************
+…or push an existing repository from the command line
+git remote add origin https://github.com/programming-hero-web-course1/b10-a9-authentication-himel-minhaj.git
+git branch -M main
+git push -u origin main
+****************************
+
+give me README.md  file formet code for this docs.
