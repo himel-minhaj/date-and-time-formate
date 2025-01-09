@@ -1,0 +1,7 @@
+npm create vite@latest 
+npm create vite@latest my-vue-app -- --template vue
+npm run dev
+
+http://localhost:5173/
+
+country-stocking.surge.sh
