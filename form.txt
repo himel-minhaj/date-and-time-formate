@@ -1,0 +1,13 @@
+<div className="form-control md:w-1/2">
+            <label className="label">
+              <span className="label-text">Coffee Name</span>
+            </label>
+            <label className="input-group">
+              <input
+                className="input input-bordered  w-full"
+                placeholder="Coffee Name"
+                type="text"
+                name="name"
+              />
+            </label>
+          </div>
