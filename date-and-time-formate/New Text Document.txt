@@ -37,6 +37,12 @@ const AddSchedule = () => {
     const title = form.Title.value;
     const day = form.Day.value;
     console.log(formatHour, formattedDate, title, day);
+ const data = {
+      title: title,
+      day: day,
+      date: formattedDate,
+      hour: formatHour,
+    };
   };
   console.log("date:", startDate);
   console.log("time:", selectedTime);
