@@ -1,0 +1,120 @@
+import { CgMenuLeftAlt } from "react-icons/cg";
+import { Link, NavLink } from "react-router-dom";
+import './Header.css';
+import { useContext, useState } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
+import { toast } from 'react-toastify';
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+
+function Header() {
+  // Dark mode toggle state
+  const [darkMode, setDarkMode] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);  // State to handle menu toggle for small screens
+
+  const toggleMode = () => {
+    setDarkMode(!darkMode);  // Toggle the dark mode state
+    document.documentElement.classList.toggle("dark");  // Toggle the 'dark' class on the document
+  };
+
+  const { user, logOut } = useContext(AuthContext);
+  const notify = () => toast.error("Logout Successful", { autoClose: 1000 });
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        console.log('user logout successful');
+        notify();
+      })
+      .catch(error => console.log('error', error.message));
+  };
+
+  const links =
+    <>
+      <NavLink className="mx-2 py-2 text-white/80 font-medium px-4 rounded text-lg" to={`/`}>Home</NavLink>
+      <NavLink className="mx-2 py-2 text-white/80 font-medium px-4 rounded text-lg" to={`/AllVisas`}>All Visas</NavLink>
+
+      {user &&
+        <>
+          <NavLink className="mx-2 py-2 text-white/80 font-medium px-4 rounded text-lg" to={`/AddVisa`}>Add Visa</NavLink>
+          <NavLink className="mx-2 py-2 text-white/80 font-medium px-4 rounded text-lg" to={`/MyAddedVisas`}>My Added Visas</NavLink>
+          <NavLink className="mx-2 py-2 text-white/80 font-medium px-4 rounded text-lg" to={`/myVisaApplications`}>My Visa Applications</NavLink>
+        </>
+      }
+    </>;
+
+  return (
+    <div className="bg-slate-800 shadow py-2">
+      <div className="navbar max-w-7xl mx-auto">
+        {/* Navbar Left (Hamburger and Logo) */}
+        <div className="navbar-start flex items-center">
+          {/* Hamburger Icon for Small Devices */}
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+            <CgMenuLeftAlt className="text-white md:w-10 md:h-10 w-7 h-7" />
+          </div>
+
+          <div className="flex gap-2 items-center">
+            <img className="md:w-10 md:h-10 w-8 h-8" src="https://cdn-icons-png.freepik.com/256/9190/9190269.png?ga=GA1.1.1542041277.1723260843&semt=ais_hybrid" alt="" />
+            <a className="md:text-3xl text-2xl text-white/90 font-bold"><span className="text-[#FF1100]">V</span>ISA<span className="text-[#FF1100]">M</span>ATE</a>
+          </div>
+        </div>
+
+        hover: if(user && user.displayNae)
+      <img className="" src="" alt="" />
+
+        {/* Navbar Center (Desktop Links) */}
+        <div className="navbar-center hidden lg:flex">
+          <ul className="menu menu-horizontal px-1">
+            {links}
+          </ul>
+        </div>
+
+        {/* Navbar Right (Mode Toggle and User Actions) */}
+        <div className="navbar-end flex items-center">
+          {/* Dark/Light Mode Toggle */}
+          <button onClick={toggleMode} className="text-white text-3xl mr-2">
+            {darkMode ? <MdLightMode /> : <MdDarkMode />}
+          </button>
+
+          {user ? (
+            <div className="flex justify-between items-center gap-3">
+              <div className="relative group">
+                <img
+                  className="w-8 h-8 ring-2 p-[3px] ring-green-600 md:w-10 md:h-10 rounded-full"
+                  src={user?.photoURL}
+                  alt="User Profile"
+                />
+                {/* Tooltip */}
+                <span className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs md:text-sm py-1 px-2 rounded max-w-[150px] md:max-w-none opacity-0 group-hover:opacity-100 transition duration-300 z-50 flex items-center gap-1">
+                  <span className="font-semibold hover:text-green-600">{user?.displayName || "User"}</span>
+                </span>
+              </div>
+              <button
+                onClick={handleLogOut}
+                className="md:py-2 p-[6px] px-3 rounded text-white md:text-lg border-none bg-[#F12A02]"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <Link
+              className="ring-2 hover:text-[#F12A02] hover:ring-white/90 duration-500 ring-[#F12A02] py-[4px] md:py-2 px-4 text-lg font-semibold text-white/80 rounded"
+              to={`/login`}
+            >
+              Login
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      {menuOpen && (
+        <div className="lg:hidden bg-slate-800 p-4">
+          <ul className="menu menu-sm p-2">{links}</ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Header;
+

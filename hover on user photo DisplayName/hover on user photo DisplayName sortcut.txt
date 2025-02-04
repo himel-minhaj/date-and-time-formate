@@ -1,0 +1,11 @@
+ <div className="relative group">
+                <img
+                  className="w-8 h-8 ring-2 p-[3px] ring-green-600 md:w-10 md:h-10 rounded-full"
+                  src={user?.photoURL}
+                  alt="User Profile"
+                />
+                {/* Tooltip */}
+                <span className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs md:text-sm py-1 px-2 rounded max-w-[150px] md:max-w-none opacity-0 group-hover:opacity-100 transition duration-300 z-50 flex items-center gap-1">
+                  <span className="font-semibold hover:text-green-600">{user?.displayName || "User"}</span>
+                </span>
+              </div>
