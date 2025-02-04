@@ -20,6 +20,11 @@ next*****************
 git remote add origin https://github.com/programming-hero-web-course1/b10-a9-authentication-himel-minhaj.git
 git branch -M main
 git push -u origin main
+
+****************************
+git add .
+git commit -m "first commit"
+git push
 ****************************
 
 give me README.md  file formet code for this docs.
