@@ -1,0 +1,278 @@
+import React, { useContext } from "react";
+import Swal from "sweetalert2";
+import { AuthContext } from "./Provider/AuthProvider";
+
+const AddVisa = () => {
+  const { user } = useContext(AuthContext);
+  const handleAddVisa = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const countryImage = form.countryImage.value;
+    const countryName = form.countryName.value;
+    const visaType = form.visaType.value;
+    const processingTime = form.processingTime.value;
+    const requiredDocuments = Array.from(form.requiredDocuments)
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.value);
+    const description = form.description.value;
+    const ageRestriction = form.ageRestriction.value;
+    const fee = form.fee.value;
+    const validity = form.validity.value;
+    const applicationMethod = form.applicationMethod.value;
+
+    const visaData = {
+      countryImage,
+      countryName,
+      visaType,
+      processingTime,
+      requiredDocuments,
+      description,
+      ageRestriction,
+      fee,
+      validity,
+      applicationMethod,
+      addedBy: user?.email,
+    };
+
+    // API Call to add visa data
+    fetch("https://visa-navigator-portal-server.vercel.app/visa", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(visaData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            title: "Success!",
+            text: "Visa added successfully!",
+            icon: "success",
+            confirmButtonText: "Cancel",
+          });
+          form.reset();
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to add visa. Please try again.",
+            icon: "error",
+            confirmButtonText: "Okay",
+          });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: `An error occurred: ${error.message}`,
+          icon: "error",
+          confirmButtonText: "Okay",
+        });
+      });
+  };
+
+  return (
+    <div className="bg-gray-100 p-10">
+      <div className="max-w-4xl mx-auto bg-white p-8 rounded shadow-lg">
+        <h1 className="text-2xl font-bold text-center mb-4">Add New Visa</h1>
+        <p className="text-center text-gray-600 mb-6">
+          Provide all necessary information to add a visa.
+        </p>
+        <form onSubmit={handleAddVisa}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-gray-700" htmlFor="countryImage">
+                Country Image URL
+              </label>
+              <input
+                type="url"
+                id="countryImage"
+                name="countryImage"
+                placeholder="Enter country image URL"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700" htmlFor="countryName">
+                Country Name
+              </label>
+              <input
+                type="text"
+                id="countryName"
+                name="countryName"
+                placeholder="Enter country name"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700" htmlFor="visaType">
+                Visa Type
+              </label>
+              <select
+                id="visaType"
+                name="visaType"
+                className="input input-bordered w-full"
+                required
+              >
+                <option value="Tourist visa">Tourist visa</option>
+                <option value="Student visa">Student visa</option>
+                <option value="Official visa">Official visa</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-700" htmlFor="processingTime">
+                Processing Time
+              </label>
+              <input
+                type="text"
+                id="processingTime"
+                name="processingTime"
+                placeholder="Enter processing time"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <label
+                className="block text-gray-700"
+                htmlFor="requiredDocuments"
+              >
+                Required Documents
+              </label>
+              <div className="flex flex-wrap gap-2">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="requiredDocuments"
+                    value="Valid passport"
+                  />{" "}
+                  Valid passport
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="requiredDocuments"
+                    value="Visa application form"
+                  />{" "}
+                  Visa application form
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="requiredDocuments"
+                    value="Recent passport-sized photograph"
+                  />{" "}
+                  Recent passport-sized photograph
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="requiredDocuments"
+                    value="Proof of acceptance from a recognized educational institution"
+                  />{" "}
+                  Proof of acceptance from a recognized educational institution
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="requiredDocuments"
+                    value="Proof of financial support"
+                  />{" "}
+                  Proof of financial support
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="requiredDocuments"
+                    value="English proficiency test results (e.g., IELTS)"
+                  />{" "}
+                  English proficiency test results (e.g., IELTS)
+                </label>
+              </div>
+            </div>
+            <div>
+              <label className="block text-gray-700" htmlFor="description">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Enter visa description"
+                className="input input-bordered w-full h-24"
+                required
+              ></textarea>
+            </div>
+            <div>
+              <label className="block text-gray-700" htmlFor="ageRestriction">
+                Age Restriction
+              </label>
+              <input
+                type="number"
+                id="ageRestriction"
+                name="ageRestriction"
+                placeholder="Enter age restriction"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700" htmlFor="fee">
+                Visa Fee
+              </label>
+              <input
+                type="number"
+                id="fee"
+                name="fee"
+                placeholder="Enter visa fee"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700" htmlFor="validity">
+                Validity
+              </label>
+              <input
+                type="text"
+                id="validity"
+                name="validity"
+                placeholder="Enter validity period"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <label
+                className="block text-gray-700"
+                htmlFor="applicationMethod"
+              >
+                Application Method
+              </label>
+              <input
+                type="text"
+                id="applicationMethod"
+                name="applicationMethod"
+                placeholder="Enter application method"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+          </div>
+          <div className="text-center mt-8">
+            <button
+              type="submit"
+              className="btn btn-secondary w-full md:w-1/3 bg-green-600 hover:bg-green-700 text-white"
+            >
+              Add Visa
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default AddVisa;
