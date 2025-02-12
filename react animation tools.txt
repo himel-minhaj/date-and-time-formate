@@ -1,0 +1,4 @@
+Lottie React -https://www.npmjs.com/package/lottie-react
+React-simple-typewriter -https://www.npmjs.com/package/react-simple-typewriter
+React Awesome reveal -https://www.npmjs.com/package/react-awesome-reveal
+React-tooltip -https://www.npmjs.com/package/react-tooltip
